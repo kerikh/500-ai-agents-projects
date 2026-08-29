@@ -1,0 +1,6 @@
+interface:
+  display_name: "500 Ai Agents Projects"
+  short_description: "Repo-specific patterns and workflows for 500-ai-agents-projects"
+  default_prompt: "Use the 500-ai-agents-projects repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
