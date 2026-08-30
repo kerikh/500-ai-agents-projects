@@ -1,6 +1,7 @@
 # Runtime deps are optional — the agent runs offline with the standard library.
 # Install these for tests and optional LLM enrichment.
-pytest==8.3.3
-PyYAML==6.0.2
-openai==1.51.0
-python-dotenv==1.0.1
+# Requires Python >=3.10 (openai and python-dotenv).
+pytest==9.1.1
+PyYAML==6.0.3
+openai==3.6.0
+python-dotenv==1.2.3
