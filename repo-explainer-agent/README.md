@@ -32,7 +32,7 @@ Scout  →  Architect  →  Teacher  →  Report
 3. **Teacher** rewrites the analysis for juniors (optional LLM polish).
 4. **Report** writes a single markdown guide you can drop into a wiki or PR.
 
-Offline mode is the default (no API key required). If `OPENAI_API_KEY` is set and `openai` is installed, the Teacher stage can enrich the welcome note with an LLM.
+Offline mode is the default (no API key required). Copy `.env.example` to `.env`, configure an OpenAI-compatible endpoint, and the Teacher stage can enrich the welcome note with an LLM.
 
 ## Quick start
 
@@ -65,11 +65,37 @@ python run_demo.py --repo /path/to/your/repo --output onboarding.md
 
 ### Optional LLM enrichment
 
+Secrets live in a **gitignored** `.env` file (never commit it). Start from the template:
+
 ```bash
-export OPENAI_API_KEY=sk-...
-export REPO_EXPLAINER_MODEL=gpt-4o-mini   # optional
+cp .env.example .env
+# edit .env — see examples below
 python run_demo.py --repo /path/to/repo
 ```
+
+**Cloud OpenAI**
+
+```env
+OPENAI_API_KEY=sk-your-key
+REPO_EXPLAINER_MODEL=gpt-4o-mini
+```
+
+**Local OpenAI-compatible server** (Ollama, LM Studio, vLLM, etc.)
+
+```env
+REPO_EXPLAINER_BASE_URL=http://localhost:11434/v1
+REPO_EXPLAINER_API_KEY=local
+REPO_EXPLAINER_MODEL=llama3.2
+```
+
+Supported env vars (all read from `.env`):
+
+| Variable | Purpose |
+| --- | --- |
+| `OPENAI_API_KEY` / `REPO_EXPLAINER_API_KEY` | API key (use `local` for many local servers) |
+| `OPENAI_BASE_URL` / `REPO_EXPLAINER_BASE_URL` | Custom `/v1` endpoint for local models |
+| `REPO_EXPLAINER_MODEL` / `OPENAI_MODEL` | Model name |
+| `REPO_EXPLAINER_TEMPERATURE` | Optional sampling temperature (default `0.2`) |
 
 ## Project layout
 
@@ -102,7 +128,7 @@ Smoke tests run fully offline against `fixtures/sample_app`.
 
 - The agent **reads local files** you point it at. Only run it on repositories you are allowed to inspect.
 - It may summarize README text and small source excerpts; do not feed it secrets or private customer data.
-- LLM mode sends repository analysis JSON to the configured OpenAI-compatible API — use offline mode for sensitive codebases.
+- LLM mode sends repository analysis JSON to the configured OpenAI-compatible API (cloud or local) — keep secrets in `.env` and use offline mode for sensitive codebases.
 - Generated guides are teaching aids, not authoritative architecture docs. Have a teammate review before using them as official onboarding.
 
 ## License

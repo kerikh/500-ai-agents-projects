@@ -19,6 +19,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from repo_explainer import RepoExplainerAgent  # noqa: E402
+from repo_explainer.llm import get_llm_config, llm_available  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -54,7 +55,14 @@ def main() -> int:
     print("=" * 72)
     print()
     print(f"Saved: {result.output_path}")
-    print(f"LLM enrichment: {'yes' if result.teacher.get('used_llm') else 'no (offline mode)'}")
+    if result.teacher.get("used_llm"):
+        print("LLM enrichment: yes")
+    elif llm_available():
+        config = get_llm_config()
+        target = config.display_target if config else "configured endpoint"
+        print(f"LLM enrichment: no (configured for {target}, but call failed or returned empty)")
+    else:
+        print("LLM enrichment: no (offline mode — copy .env.example to .env to enable)")
     return 0
 
 
