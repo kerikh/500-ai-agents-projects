@@ -1,0 +1,17 @@
+title: repo-explainer-agent
+author: Cursor Cloud Agent
+language: python
+tags:
+  - llm
+  - agent
+  - education
+  - onboarding
+  - developer-tools
+  - code-understanding
+license: MIT
+datasets: []
+entrypoint: run_demo.py
+requirements: requirements.txt
+description: >
+  Multi-stage agent that inspects a local repository and produces a
+  junior-friendly onboarding guide (stack, folder map, learning path, glossary).
